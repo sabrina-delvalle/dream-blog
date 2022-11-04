@@ -1,0 +1,169 @@
+import React, { Component } from "react";
+import loginPng from '../images/login.png'
+import privacyPng from '../images/security.png'
+import logoutPng from '../images/logout.png'
+import blogPng from '../images/blog.png'
+import legalPng from '../images/legal.png'
+
+import draftToHtml from 'draftjs-to-html'
+import { Editor } from 'react-draft-wysiwyg';
+//import { EditorState, convertFromRaw /* convertToRaw */ } from "draft-js";
+
+import '/node_modules/react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
+import { convertFromRaw } from 'draft-js';
+
+const content = {"entityMap":{},"blocks":[{"key":"637gr","text":"Initialized from content state.","type":"unstyled","depth":0,"inlineStyleRanges":[],"entityRanges":[],"data":{}}]};
+
+export default class PostPage extends Component {
+
+    constructor(props){
+        super(props);
+        const contentState = convertFromRaw(content);
+        this.state ={title: '', autor: '', quote:'', text: '', image: '', /* editorState: EditorState.createEmpty(), */ contentState};  //content State JSON 
+        
+        this.handleTitle = this.handleTitle.bind(this);
+        this.handleAutor = this.handleAutor.bind(this);
+        this.quoteHandler = this.quoteHandler.bind(this);
+        this.imageHandler = this.imageHandler.bind(this);
+        this.handleTextArea = this.handleTextArea.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
+        this.onEditorStateChange = this.onEditorStateChange.bind(this)
+        this.onContentStateChange = this.onContentStateChange.bind(this)
+      }
+    
+      handleTitle(event) {
+        this.setState({title: event.target.value})
+      }
+    
+      handleAutor(event) {
+        this.setState({autor: event.target.value})
+      }
+
+      quoteHandler(event){
+        this.setState({quote: event.target.value})
+      }
+
+      imageHandler(event) {
+        this.setState({image: event.target.value})
+      }
+
+      handleTextArea(event) {
+        this.setState({text: event.target.value})
+      }
+    
+      handleSubmit(event){
+        console.log('A title was submitted: ' + this.state.title + ' an autor was sent: ' + this.state.autor + ', text: ' + this.state.text)
+    
+        fetch('http://localhost:5000/post', {
+          method: 'POST',
+          headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json"
+          },
+          body: JSON.stringify({
+            title: this.state.title,
+            autor: this.state.autor,
+            quote: this.state.quote,
+            article: this.state.contentState,
+            image: this.state.image
+          })
+        })
+          .then(response => response.json())
+          .then(data => console.log('response from backend server ', data))
+        
+          this.props.navigate('/')
+    
+          //event.preventDefault();
+      }
+
+      onEditorStateChange = (editorState) => {
+        this.setState({
+          editorState
+        })
+      }
+
+      onContentStateChange = (contentState) => {
+        this.setState({
+          contentState,
+        });
+      };
+
+/*       onContentStateChange = (contentState) => {
+        console.log(this.state.contentState)
+        this.setState({
+          contentState,
+        });
+      }; */
+
+  render() {
+
+    //const {editorState} = this.state
+    //console.log(editorState);
+    //console.log(draftToHtml(convertToRaw(this.state.editorState.getCurrentContent())))
+    const { contentState } = this.state;
+    console.log(draftToHtml(contentState))
+
+
+    return (
+        <div className="main-profile">
+        <aside className="userdata">
+            <a href='/profile' className="menu-item"> <img src={loginPng} alt='login' style={{"width": "25px", margin: "0 10px 0 0"}}></img> <span className="user-items item-top">Account</span> </a>
+            <a href='/profile' className="menu-item"> <img src={privacyPng} alt='login' style={{"width": "25px", margin: "0 10px 0 0"}}></img> <span className="user-items item-top">Privacy</span> </a>
+            <a href='/profile' className="menu-item"> <img src={blogPng} alt='login' style={{"width": "25px", margin: "0 10px 0 0"}}></img> <span className="user-items item-top">Blog's Info</span> </a>
+            <a href='/profile' className="menu-item"> <img src={legalPng} alt='login' style={{"width": "25px", margin: "0 10px 0 0"}}></img> <span className="user-items item-top">Policies</span> </a>
+
+            <a href='/' className="menu-item"> <img src={logoutPng} alt='login' style={{"width": "25px", margin: "0 10px 0 0"}}></img> <span className="user-items item-top">logout</span> </a>
+        </aside>
+        <main className="edit-space">
+            <form onSubmit={this.handleSubmit} className='centerForm-login'>
+            <h1 className='center' > EDIT POST </h1>            
+                <label className='edits' name=" title "> Title </label>             
+                <input placeholder="Title" type='text' value={this.state.title} onChange={this.handleTitle} className='input' name="title"/>
+                <label className='edits' name="autor">Autor </label>             
+                <input  placeholder="Autor" type='text' value={this.state.autor} onChange={this.handleAutor} className='input' name="autor"/>
+                {/* <label className='edits' name="quote">Quote </label>             
+                <input  placeholder="| Quote" type='text' value={this.state.quote} onChange={this.quoteHandler} className='input' name="quote"/> */}
+                
+{/*                 <label className='edits' name=" title "> Content </label>             
+ */}                <div className="editor">
+                  <Editor
+                    //initialContentState={contentState}
+                    wrapperClassName="wrapper-class"
+                    editorClassName="editor-class"
+                    onContentStateChange={this.onContentStateChange}
+
+                    //editorState={editorState}
+                        //contentState={contentState}
+                    //wrapperClassName="wrapper-class"
+                    //editorClassName="editor-class"
+                    toolbarClassName="toolbar-class"
+                    //onEditorStateChange={this.onEditorStateChange}
+                           //onContentStateChange={this.onContentStateChange}
+                    toolbar={{
+                      inline: { inDropdown: true },
+                      list: { inDropdown: true },
+                      textAlign: { inDropdown: true },
+                      link: { inDropdown: true },
+                      history: { inDropdown: true },
+                    }}
+                    //wrapperStyle={<wrapperStyleObject/>}
+                    //editorStyle={<editorStyleObject/>}
+                    //toolbarStyle={<toolbarStyleObject/>}
+                  />
+                </div>
+{/*                 <textarea
+                onChange={this.handleTextArea}
+                value={JSON.stringify(contentState, null, 4)}
+                style={{width: '1000px', height: '400px'}}
+                /> */}
+                <label className='edits' name="image"> Image </label> 
+                <input type='file' className="file-upload" onChange={this.imageHandler}/>
+                <input type="submit" value="Submit" className='submit' onClick={this.handleSubmit}/>
+              </form>
+
+        </main>
+    </div>
+    )
+  }
+}
+
