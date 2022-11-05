@@ -4,6 +4,7 @@ import axios from 'axios';
 import { useState, useEffect } from "react";
 //import { navigate } from "react-router-dom"
 axios.defaults.withCredentials = true;
+axios.defaults.headers.post['Content-Type'] ='application/x-www-form-urlencoded';
 
 
 export default function Header() {
@@ -18,20 +19,32 @@ export default function Header() {
         console.log('axios', res.data)
       }) */  
       try{
-        await fetch('http://localhost:5000/token', {
+/*         await fetch('http://localhost:5000/token', {
           method: 'GET',
           headers: {
             "Content-Type": "application/json",
-            "Accept": "application/json"
+            "Accept": "application/json",
+          }
+        }) */
+        await axios.get('http://localhost:5000/token', {
+          headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json",
           }
         })
-        .then(response => response.json())
-        .then(data=>{
+        .then(response => {
+          console.log(response.data);
+          console.log('previous token, ', response);
+          if(response.data['token']) {
+            setBearer(`Bearer ${response.data['token']}`)
+          }
+        })
+        //.then(response => response.json())
+/*         .then(data=>{
           console.log('previous token, ', data);
           if(data['token']) {
             setBearer(`Bearer ${data['token']}`)
-          }
-        })
+          } */
         //console.log('token from API: ', token)
       }catch(err){
         console.log(err)

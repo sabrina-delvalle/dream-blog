@@ -3,7 +3,7 @@ const bcrypt = require('bcrypt');
 const User = require('../Models/User');
 
 const tokenCheck = (req, res) => {
-    console.log("cookie headers: ", req.headers.cookie)
+    //console.log("cookie headers: ", req.headers.cookie)
     if(req.headers.cookie){
         let token = req.headers.cookie
         token = token.split('=')[1]
@@ -43,7 +43,7 @@ const userAuth = async (req, res) => {
             const setCookie = {
                 sameSite: 'strict',
                 path: '/',
-                expires: new Date(new Date().getTime() + 5 * 1000),
+                expires: new Date(new Date().getTime() + 30 * 1000),
                 httpOnly: true
                 //secure: true
             }
