@@ -11,6 +11,7 @@ export default function Header() {
 
   const [user, setUser] = useState(false);
   const [name, setName] = useState('Login');
+  const [userImg, setUserImg] = useState('');
   const [bearer, setBearer] = useState(undefined)
   
   useEffect( () => {
@@ -72,6 +73,7 @@ export default function Header() {
          return setUser(false)
        }
        setName(data.name.toUpperCase()[0] + data.name.slice(1))
+       setUserImg(data.image)
        //console.log(name)
        setUser(true)
      })
@@ -87,7 +89,7 @@ export default function Header() {
   })}
 
 
-  const toRender = user ? <Logged name={name} setBearer={setBearer} clearCookie={handleCookieDelete}/> : <Login /> 
+  const toRender = user ? <Logged userImg={userImg} name={name} setBearer={setBearer} clearCookie={handleCookieDelete}/> : <Login /> 
   return (
   <div>
     <div className="Header">
@@ -111,8 +113,13 @@ function Login(props){
 
 function Logged(props){
   return (
-  <div>
-    <a href="http://localhost:3000/profile" className="log-link">Welcome, {props.name}</a>/<button className="logout-link" onClick={props.clearCookie}>log Out</button>
+  <div className="logs">
+    
+    <a href="http://localhost:3000/profile" className="log-link">Welcome, {props.name}</a> 
+    
+
+    <img src={props.userImg} width='50px' className="profile-img" alt='profile-img'/>
+    <button className="logout-link" onClick={props.clearCookie}>log Out</button>
   </div>
   )
 }

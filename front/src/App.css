@@ -78,10 +78,11 @@
 
 
 .logout-link{
+  display: none;
   padding: 0 10px;
   color: rgb(202, 202, 202);
   background: none;
-  border: 0px
+  border: 0px;
 }
 .logout-link:hover{
   padding: 0 10px;
@@ -674,8 +675,30 @@ a{
   margin-top: -6%;
 }
 
+.logs{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
 .centerForm-login-section{
   display: flex;
   flex-direction: column;
   justify-content: center;
+}
+
+.profile-img{
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  object-position: 50% 50%;
+  border-radius: 50%;
+  border: 2px solid greenyellow
+}
+.profile-img:hover + .logout-link{
+  height: 50px;
+  width: 50px;
+  display: block;
+  cursor: pointer;
 }

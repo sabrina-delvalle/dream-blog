@@ -31,8 +31,8 @@ const createUser =  async (req, res) => {
         lastname: req.body.lastname,
         username: req.body.username,
         email: req.body.email,
-        password: hashed_password,
-        image: req.files['file'].name,      //upload file to cloudinary, use and URL
+        password: hashed_password
+        //image: req.files['file'].name,      //upload file to cloudinary, use and URL
     });
     
     try {
@@ -42,6 +42,8 @@ const createUser =  async (req, res) => {
             api_key: process.env.CLOUD_K3Y,
             api_secret: process.env.AP1_S3CRET
         })
+        console.log(result)
+        user.image = result['secure_url']
         let saveUser = await user.save();
         //console.log(user)
         res.send(user);

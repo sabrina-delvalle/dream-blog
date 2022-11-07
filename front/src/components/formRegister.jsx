@@ -73,7 +73,7 @@ class FormRegister extends Component {
         .then(response => console.log(response.data))
         .catch(err => console.log(err))
     
-    //this.props.navigate('/done') 
+    this.props.navigate('/done') 
     //event.preventDefault();
 
 
