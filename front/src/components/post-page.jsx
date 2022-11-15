@@ -52,6 +52,7 @@ export default class PostPage extends Component {
       }
     
       handleSubmit(event){
+        event.preventDefault();
         console.log('A title was submitted: ' + this.state.title + ' an autor was sent: ' + this.state.autor + ', text: ' + this.state.text)
     
         fetch('http://localhost:5000/post', {
@@ -71,7 +72,7 @@ export default class PostPage extends Component {
           .then(response => response.json())
           .then(data => console.log('response from backend server ', data))
         
-          this.props.navigate('/')
+          //this.props.navigate('/')
     
           //event.preventDefault();
       }
