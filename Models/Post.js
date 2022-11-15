@@ -13,10 +13,10 @@ const postSchema = mongoose.Schema({
     },
     article: Object,
     image: String,
-    comment: {
+    comments: {
         type: Array,
-        of: String,
-        default: ['0', '2']     
+        of: Object,
+        default: []     
     }     //remember to update comments list
 })
 

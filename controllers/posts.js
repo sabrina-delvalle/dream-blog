@@ -20,7 +20,7 @@ const postArticle = async (req, res) => {
     try {
         let newArticle = await article.save();
         console.log("_id: ", article._id)
-        console.log(await Post.findById('630ca02b5d1e9a053edf4112'))
+        //console.log(await Post.findById('630ca02b5d1e9a053edf4112'))
         res.json(article)
     }catch(err){
         res.json({message: err});
@@ -32,6 +32,16 @@ const getArticle = async (req, res) => {
     try{
         //console.log(req.params._id)
         const article = await Post.find().sort({ _id: -1 }).limit(3)
+        res.json(article)
+    }catch(err){
+        res.json({error: err})
+    } 
+}
+
+const getOneArticle = async (req, res) => {
+    try{
+        //console.log(req.params._id)
+        const article = await Post.find({ _id: req.params.id })
         res.json(article)
     }catch(err){
         res.json({error: err})
@@ -99,4 +109,4 @@ const toBackend = (req, res) => {
     res.json({"users": ['userOne', 'userTwo', 'userThree']})
 }
 
-module.exports = { postArticle, toBackend, getArticle, deleteArticle, updateArticle, createArticle, getLatest }
+module.exports = { postArticle, toBackend, getArticle, deleteArticle, updateArticle, createArticle, getLatest, getOneArticle }

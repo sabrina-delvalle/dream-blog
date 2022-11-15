@@ -9,29 +9,9 @@ import NotFound from './Pages/404_notfound';
 import User from './Pages/user'
 import Profile from './Pages/userprofile';
 import PostPage from './Pages/new-post';
+import PostID from './Pages/post';
 
 function App() {
-  /* const [backendData, setBackendData] = useState([{}]);
-
-  useEffect( () => {
-    fetch('/api')
-        .then( response => response.json())
-        .then(data => {
-          console.log(data)
-          setBackendData(data)
-        })
-  }, [])
-
-  return(
-    <div>
-      {(typeof backendData.users === 'undefined') ? 
-          (<p>loading...</p>) : (backendData.users.map((user, i) => {
-              return <p key={i}>{user}</p>
-      }))
-      }
-    </div>
-  ) */
-
   return (
     <Router>
       <Routes>
@@ -42,6 +22,7 @@ function App() {
         <Route path='/auth' element={<Auth/>} />
         <Route path='/register' element={<Register/>} />
         <Route path='/user/:id' element={<User />} />
+        <Route path='/post/:id' element={<PostID />} />
         <Route path='/done' element={<Done />} />
         <Route path='*' element={<NotFound/>} />
       </Routes>

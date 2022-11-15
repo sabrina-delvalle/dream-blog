@@ -1,3 +1,4 @@
+require('dotenv').config();
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const User = require('../Models/User');
@@ -43,7 +44,7 @@ const userAuth = async (req, res) => {
             const setCookie = {
                 sameSite: 'strict',
                 path: '/',
-                expires: new Date(new Date().getTime() + 30 * 1000),
+                expires: new Date(new Date().getTime() + 100 * 1000),
                 httpOnly: true
                 //secure: true
             }
