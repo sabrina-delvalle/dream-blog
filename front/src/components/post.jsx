@@ -14,6 +14,7 @@ import parse from 'html-react-parser';
 export default function Post() {
 
     const [ post, setPost ] = useState([]);
+    const [textArea, setTextArea] = useState("");
     let { id } = useParams();
 
     useEffect( () => {
@@ -30,6 +31,20 @@ export default function Post() {
 
     }, [id])
 
+    function handleComment() {
+        console.log('on comment section: ', textArea)
+        const comment = {   
+                            user: {name: '', profileImage:''}, 
+                            comment: textArea,
+                            date: new Date(),
+                            replies: {list: ''}    
+                        }
+        console.log(comment);
+        setTextArea('')
+    }
+    function handleText(e) {
+        setTextArea(e.target.value);
+    }
 
     return (
     <div className="article-section top-article">
@@ -43,7 +58,9 @@ export default function Post() {
                 <a href='/'><img src={twitter} alt='fb' width='27px' className='ssrr-img'></img></a>
                 </div>        
         </div>
-        <p className='date'> Sun fix, {post['date'].split('-')[2].slice(0, 2)}/{post['date'].split('-')[1]}/{post['date'].split('-')[0]} </p> 
+        
+        {/* <p className='date'> Sun fix, {post['date'].split('-')[2].slice(0, 2)}/{post['date'].split('-')[1]}/{post['date'].split('-')[0]} </p> */}
+        {post['date'] !== undefined ? <p className='date'> Sun fix, {post['date'].split('-')[2].slice(0, 2)}/{post['date'].split('-')[1]}/{post['date'].split('-')[0]} </p> : <p>Loading...</p>}
       
         <div className='post-article'>{parse(draftToHtml(post.article))}</div>
         <div className="user-id">
@@ -63,8 +80,8 @@ export default function Post() {
                     <p>James!</p>
                     <p>I dont love this omg!</p>
                 </div>
-                <textarea className="comments" placeholder="write comment"/>
-                <button className="post-button2">Post</button>
+                <textarea className="comments" placeholder="write comment" onChange={handleText} value={textArea}/>
+                <button className="post-button2" onClick={handleComment}>Post</button>
         </div>
 
     </div>

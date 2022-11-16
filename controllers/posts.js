@@ -47,6 +47,16 @@ const getOneArticle = async (req, res) => {
         res.json({error: err})
     } 
 }
+
+const getArticleByName = async (req, res) => {
+    try{
+        //console.log(req.params._id)
+        const article = await Post.find({ name: req.params.name })
+        res.json(article)
+    }catch(err){
+        res.json({error: err})
+    } 
+}
 //get new Extra
 const getLatest = async (req, res) => {
     try{
@@ -109,4 +119,4 @@ const toBackend = (req, res) => {
     res.json({"users": ['userOne', 'userTwo', 'userThree']})
 }
 
-module.exports = { postArticle, toBackend, getArticle, deleteArticle, updateArticle, createArticle, getLatest, getOneArticle }
+module.exports = { postArticle, toBackend, getArticle, deleteArticle, updateArticle, createArticle, getLatest, getOneArticle, getArticleByName }
