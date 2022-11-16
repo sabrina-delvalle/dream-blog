@@ -48,7 +48,8 @@ const userAuth = async (req, res) => {
                 httpOnly: true
                 //secure: true
             }
-            return res.status(202).cookie("Token", token, setCookie).send('initialized cookie')
+            console.log('current user for local storage... ', user)
+            return res.status(202).cookie("Token", token, setCookie).send(user)
         }
     }catch(err){
         res.status(400).send(err)

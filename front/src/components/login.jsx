@@ -86,6 +86,9 @@ class Login extends Component {
         this.setState({logged: false})
         this.setState({password: ''})
       } else {
+        console.log('local storageee: ', res.data)
+        localStorage.setItem('username', JSON.stringify(res.data.name))
+        localStorage.setItem('image', JSON.stringify(res.data.image))
         this.props.navigate('/')
       }
   })
