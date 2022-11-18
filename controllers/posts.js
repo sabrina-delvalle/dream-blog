@@ -115,8 +115,10 @@ const createArticle = (req, res) => {
     
 }
 
-const toBackend = (req, res) => {
-    res.json({"users": ['userOne', 'userTwo', 'userThree']})
+// Comments
+const postComment = async (req, res) => {
+    const post = await Post.findByIdAndUpdate(req.params.id, { comments: req.body.comment});
+    res.status(200).send('Comment posted, OK!');
 }
 
-module.exports = { postArticle, toBackend, getArticle, deleteArticle, updateArticle, createArticle, getLatest, getOneArticle, getArticleByName }
+module.exports = { postArticle, getArticle, deleteArticle, updateArticle, createArticle, getLatest, getOneArticle, getArticleByName, postComment }

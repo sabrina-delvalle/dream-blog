@@ -11,6 +11,9 @@ import axios from "axios";
 import draftToHtml from 'draftjs-to-html'
 import parse from 'html-react-parser';
 
+axios.defaults.withCredentials = true;
+axios.defaults.headers.post['Content-Type'] ='application/json';
+
 export default function Post() {
 
     const [ post, setPost ] = useState([]);
@@ -32,16 +35,38 @@ export default function Post() {
     }, [id])
 
     function handleComment() {
+
         console.log('on comment section: ', textArea)
         const comment = {   
-                            user: {name: '', profileImage:''}, 
+                            user: {name: JSON.parse(localStorage.getItem('username')), profileImage:JSON.parse(localStorage.getItem('image'))}, 
                             comment: textArea,
                             date: new Date(),
                             replies: {list: ''}    
                         }
         console.log(comment);
+        
+        fetch(`http://localhost:5000/comment/${id}`, {
+            method: 'PATCH',
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "text",
+            },
+            body: JSON.stringify(comment)
+        })
+     .then(response => response.text())
+     .then(data => console.log(data))
+
+/*         axios.patch(`http://localhost:5000/comment/${id}`, comment, {
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json",   
+            }
+        })
+        .then(response => console.log(response.data)); */
+
         setTextArea('')
     }
+
     function handleText(e) {
         setTextArea(e.target.value);
     }
@@ -72,6 +97,7 @@ export default function Post() {
 
         <div className="comments-wrapper">
             <p className="title-comments">Comments</p>
+            {/* Here should be a comment... to render if saved inside post. */}
                 <div className="comment">
                     <p>THALIA!</p>
                     <p>I dont love this omg! {post.comments}</p>

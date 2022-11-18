@@ -10,7 +10,7 @@ const middleware = require('../middleware/authentication')
 router.use(cors({withCredentials: true}));
 router.use(function (req, res, next) {
     res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH');
     //res.setHeader('Access-Control-Expose-Headers', '*, Authorization')
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type', 'Set-Cookie', '*');
     res.setHeader('Access-Control-Allow-Credentials', true);
@@ -36,6 +36,9 @@ router.get('/read/latest/:id', postsRouter.getLatest)
 router.get('/post/:id', postsRouter.getOneArticle)
 router.patch('/update/:id', postsRouter.updateArticle)
 router.delete('/delete/:_id', postsRouter.deleteArticle)
+
+//post routes for comments
+router.patch('/comment/:id', postsRouter.postComment)
 
 //user routes
 router.post('/register', usersRouter.createUser)

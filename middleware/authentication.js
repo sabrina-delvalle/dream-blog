@@ -24,7 +24,7 @@ const basicCookie = async (req, res) => {
     res.status(202).cookie('Name', 'Sabri', {
         SameSite: 'strict',
         path: '/',
-        expires: new Date(new Date().getTime() + 200 * 1000),
+        expires: new Date(new Date().getTime() + 2000 * 1000),
         httpOnly: false
         //secure: true
     }).send('initialised')
