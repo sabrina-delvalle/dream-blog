@@ -39,6 +39,7 @@ router.delete('/delete/:_id', postsRouter.deleteArticle)
 
 //post routes for comments
 router.patch('/comment/:id', postsRouter.postComment)
+router.put('/comment/delete/:id', postsRouter.deleteComment)
 
 //user routes
 router.post('/register', usersRouter.createUser)

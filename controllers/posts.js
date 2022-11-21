@@ -117,8 +117,18 @@ const createArticle = (req, res) => {
 
 // Comments
 const postComment = async (req, res) => {
-    const post = await Post.findByIdAndUpdate(req.params.id, { comments: req.body.comment});
+    console.log('body of comment: ', req.body);
+    const post = await Post.findByIdAndUpdate(req.params.id, { 
+                                                                $push: {comments: req.body}
+                                                            });
     res.status(200).send('Comment posted, OK!');
 }
 
-module.exports = { postArticle, getArticle, deleteArticle, updateArticle, createArticle, getLatest, getOneArticle, getArticleByName, postComment }
+const deleteComment = async (req, res) => {
+    console.log('elem to delete...', req.body.pos);
+    const commentToDelete = await Post.findOneAndUpdate({_id: req.params.id}, {
+                                                                            $pull: {comments: { $in: 0}}
+                                                                        })
+}
+
+module.exports = { postArticle, getArticle, deleteArticle, updateArticle, createArticle, getLatest, getOneArticle, getArticleByName, postComment,  deleteComment }
