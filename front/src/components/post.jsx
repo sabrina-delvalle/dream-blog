@@ -76,17 +76,17 @@ export default function Post() {
     }
 
     function handleDelete(e){
-        console.log('position ', e)
+        console.log('element ', e)
 
         fetch(`http://localhost:5000/comment/delete/${id}`, {
-            method: 'PUT',
+            method: 'PATCH',
             headers: {
                 "Content-Type": "application/json",
-                "Accept": "text",
+                "Accept": "application/json",
             },
-            body: JSON.stringify({pos: e})
+            body: JSON.stringify({elem: e})
         })
-        .then(response => response.text())
+        .then(response => response.json())
         .then(data => console.log(data))
 
     }
@@ -122,7 +122,7 @@ export default function Post() {
                  { post['comments'] !== undefined ? <div>{ post['comments'].map((elem) => 
                                                     <div key={post['comments'].indexOf(elem)} >
                                                         <div className='comment-wrapper'>
-                                                        <img src={dots} alt='info-extra' className="dots-info" onClick={()=>handleDelete(post['comments'].indexOf(elem))} />
+                                                        <img src={dots} alt='info-extra' className="dots-info" onClick={()=>handleDelete(elem)} />
                                                             <img src={elem['user'].profileImage} width="50px" alt='user-pic' className="comment-pic"/>
                                                             <p className="comment-1"> {elem['comment']} </p>
                                                         </div>

@@ -126,9 +126,11 @@ const postComment = async (req, res) => {
 
 const deleteComment = async (req, res) => {
     console.log('elem to delete...', req.body.pos);
-    const commentToDelete = await Post.findOneAndUpdate({_id: req.params.id}, {
-                                                                            $pull: {comments: { $in: 0}}
-                                                                        })
+    const _id = req.params.id;
+    const commentToDelete = await Post.findByIdAndUpdate(_id, {
+                                                                    $pull: { comments: req.body.elem }
+                                                                })
+    res.send(commentToDelete['comments'])  //re-check later...
 }
 
 module.exports = { postArticle, getArticle, deleteArticle, updateArticle, createArticle, getLatest, getOneArticle, getArticleByName, postComment,  deleteComment }
