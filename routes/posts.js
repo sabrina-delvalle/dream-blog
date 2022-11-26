@@ -36,6 +36,7 @@ router.get('/read/latest/:id', postsRouter.getLatest)
 router.get('/post/:id', postsRouter.getOneArticle)
 router.patch('/update/:id', postsRouter.updateArticle)
 router.delete('/delete/:_id', postsRouter.deleteArticle)
+router.post("/postimage", postsRouter.postImage)
 
 //post routes for comments
 router.patch('/comment/:id', postsRouter.postComment)

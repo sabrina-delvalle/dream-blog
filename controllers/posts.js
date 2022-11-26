@@ -2,7 +2,15 @@ require('dotenv').config();
 const jwt = require('jsonwebtoken')
 const Post = require('../Models/Post');
 const express = require("express");
+const cloudinary = require('cloudinary').v2;
 const app = express();
+
+cloudinary.config={
+    cloud_name: process.env.CLOUD_N4ME,
+    api_key: process.env.CLOUD_K3Y,
+    api_secret: process.env.AP1_S3CRET,
+    secure: true,
+}
 
 app.use(express.json())
 
@@ -133,4 +141,27 @@ const deleteComment = async (req, res) => {
     res.send(commentToDelete['comments'])  //re-check later...
 }
 
-module.exports = { postArticle, getArticle, deleteArticle, updateArticle, createArticle, getLatest, getOneArticle, getArticleByName, postComment,  deleteComment }
+const postImage = async(req, res) => {
+    const file = req.files.file;
+    console.log('images send to back ', req.files)
+    console.log('image name: ', req.files['file'].name)
+
+    try {
+        const result = await cloudinary.uploader.upload(file.tempFilePath, {
+            folder: 'posts',
+            cloud_name: process.env.CLOUD_N4ME,
+            api_key: process.env.CLOUD_K3Y,
+            api_secret: process.env.AP1_S3CRET
+        })
+        console.log(result)
+        //user.image = result['secure_url']
+        //UPDATE OF THE ARRAY IMAGES PUSH NEW LINK RETURN LINK/URL
+        //console.log(user)
+        res.send(result);
+    }catch (err){
+        res.json({error: err});
+    }
+
+}
+
+module.exports = { postArticle, getArticle, deleteArticle, updateArticle, createArticle, getLatest, getOneArticle, getArticleByName, postComment,  deleteComment, postImage }

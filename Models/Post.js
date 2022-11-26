@@ -12,7 +12,11 @@ const postSchema = mongoose.Schema({
         default: Date.now
     },
     article: Object,
-    image: String,
+    images: {
+        type: Array,
+        of: String,
+        default: []
+    },
     comments: {
         type: Array,
         of: Object,

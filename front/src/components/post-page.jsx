@@ -4,22 +4,24 @@ import privacyPng from '../images/security.png'
 import logoutPng from '../images/logout.png'
 import blogPng from '../images/blog.png'
 import legalPng from '../images/legal.png'
+import axios from 'axios';
 
 import draftToHtml from 'draftjs-to-html'
 import { Editor } from 'react-draft-wysiwyg';
 //import { EditorState, convertFromRaw /* convertToRaw */ } from "draft-js";
-
 import '/node_modules/react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import { convertFromRaw } from 'draft-js';
-
 const content = {"entityMap":{},"blocks":[{"key":"637gr","text":"Initialized from content state.","type":"unstyled","depth":0,"inlineStyleRanges":[],"entityRanges":[],"data":{}}]};
+
+axios.defaults.withCredentials = true;
+axios.defaults.headers.post['Content-Type'] = 'application/json';
 
 export default class PostPage extends Component {
 
     constructor(props){
         super(props);
         const contentState = convertFromRaw(content);
-        this.state ={title: '', autor: '', quote:'', text: '', image: '', /* editorState: EditorState.createEmpty(), */ contentState};  //content State JSON 
+        this.state ={title: '', autor: '', quote:'', text: '', images: [], /* editorState: EditorState.createEmpty(), */ contentState};  //content State JSON 
         
         this.handleTitle = this.handleTitle.bind(this);
         this.handleAutor = this.handleAutor.bind(this);
@@ -89,7 +91,49 @@ export default class PostPage extends Component {
         });
       };
 
-/*       onContentStateChange = (contentState) => {
+      setImage = async (file) => {
+        console.log(file);
+/* 
+        return new Promise((resolve, reject) => {
+          const reader = new window.FileReader();
+          console.log(reader);
+          reader.onloadend = async () => {
+            const form_data = new FormData();
+            form_data.append("file", file);
+            const res = await uploadFile(form_data);
+            setValue("thumbnail", res.data);
+            resolve({ data: { link: process.env.REACT_APP_API + res.data } });
+          };
+          reader.readAsDataURL(file);
+        }); */
+
+        return new Promise((resolve, reject) => {
+          const reader = new window.FileReader();
+          console.log("reader: ", reader);
+          reader.onloadend = async () => {
+            const formData = new FormData();
+            formData.append("file", file);
+            
+            const image = await axios.post('http://localhost:5000/postimage', formData)
+            .then(response => {
+                                console.log('image pre-set, response: ', response.data);
+                                this.setState({images: this.state['images'].push(response.data.url)})
+                                return(response.data.url)
+                              })
+            .catch(err => console.log(err))
+    
+            //const res = await uploadFile(form_data);
+            //setValue("thumbnail", res.data);
+            resolve({ data: { link: image } });
+          };
+          reader.readAsDataURL(file);
+        });
+
+
+
+      }
+
+      /*       onContentStateChange = (contentState) => {
         console.log(this.state.contentState)
         this.setState({
           contentState,
@@ -142,10 +186,35 @@ export default class PostPage extends Component {
                            //onContentStateChange={this.onContentStateChange}
                     toolbar={{
                       inline: { inDropdown: true },
-                      list: { inDropdown: true },
+                      list: { inDropdown: true, options: ['unordered', 'ordered'], },
                       textAlign: { inDropdown: true },
                       link: { inDropdown: true },
                       history: { inDropdown: true },
+                      blockType: {
+                        options: ['Normal', 'H2', 'H3', 'H4', 'H5', 'Blockquote', 'Code'],
+                      },
+                      options: ['inline', 'blockType', 'fontFamily', 'list', 'textAlign', 'colorPicker', 'link', 'image', 'remove', 'history'],
+                      colorPicker: {
+                        colors: [ 'rgb(0,0,0)', 'rgb(204,204,204)', 'rgb(209,213,216)', 'rgb(163,143,132)', 'rgb(239,239,239)' ],
+                      },
+                      fontFamily: {
+                        options: ['Arial', 'Tahoma', 'Verdana'],
+                      },
+                      image: {
+                        className: undefined,
+                        component: undefined,
+                        popupClassName: undefined,
+                        urlEnabled: true,
+                        uploadEnabled: true,
+                        alignmentEnabled: true,
+                        uploadCallback: this.setImage,
+                        previewImage: true,
+                        inputAccept: 'image/gif,image/jpeg,image/jpg,image/png,image/svg',
+                        alt: { present: false, mandatory: false },
+                        defaultSize: {
+                          width: '700px',
+                        },
+                      },
                     }}
                     //wrapperStyle={<wrapperStyleObject/>}
                     //editorStyle={<editorStyleObject/>}
