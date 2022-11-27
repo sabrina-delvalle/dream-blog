@@ -88,6 +88,7 @@ class Login extends Component {
       } else {
         console.log('local storageee: ', res.data)
         localStorage.setItem('username', JSON.stringify(res.data.name))
+        localStorage.setItem('userlastname', JSON.stringify(res.data.lastname))
         localStorage.setItem('image', JSON.stringify(res.data.image))
         this.props.navigate('/')
       }

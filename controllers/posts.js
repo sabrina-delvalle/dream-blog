@@ -23,7 +23,7 @@ const postArticle = async (req, res) => {
         quote: req.body.quote,
         //date: new Date(),
         article: req.body.article,
-        image: req.body.image
+        images: req.body.images
     });
     try {
         let newArticle = await article.save();

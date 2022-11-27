@@ -5,23 +5,26 @@ import logoutPng from '../images/logout.png'
 import blogPng from '../images/blog.png'
 import legalPng from '../images/legal.png'
 import axios from 'axios';
-
 import draftToHtml from 'draftjs-to-html'
 import { Editor } from 'react-draft-wysiwyg';
 //import { EditorState, convertFromRaw /* convertToRaw */ } from "draft-js";
 import '/node_modules/react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import { convertFromRaw } from 'draft-js';
+const name = JSON.parse(localStorage.getItem('username'))[0].toUpperCase() + JSON.parse(localStorage.getItem('username')).slice(1);
+const lastname = JSON.parse(localStorage.getItem('userlastname'))[0].toUpperCase() + JSON.parse(localStorage.getItem('userlastname')).slice(1)
 const content = {"entityMap":{},"blocks":[{"key":"637gr","text":"Initialized from content state.","type":"unstyled","depth":0,"inlineStyleRanges":[],"entityRanges":[],"data":{}}]};
+
 
 axios.defaults.withCredentials = true;
 axios.defaults.headers.post['Content-Type'] = 'application/json';
+
 
 export default class PostPage extends Component {
 
     constructor(props){
         super(props);
         const contentState = convertFromRaw(content);
-        this.state ={title: '', autor: '', quote:'', text: '', images: [], /* editorState: EditorState.createEmpty(), */ contentState};  //content State JSON 
+        this.state ={title: '', autor: `${name} ${lastname}`, quote:'', text: '', images: [], /* editorState: EditorState.createEmpty(), */ contentState};  //content State JSON 
         
         this.handleTitle = this.handleTitle.bind(this);
         this.handleAutor = this.handleAutor.bind(this);
@@ -31,6 +34,7 @@ export default class PostPage extends Component {
         this.handleSubmit = this.handleSubmit.bind(this);
         this.onEditorStateChange = this.onEditorStateChange.bind(this)
         this.onContentStateChange = this.onContentStateChange.bind(this)
+        this.checkImages = this.checkImages.bind(this)
       }
     
       handleTitle(event) {
@@ -68,7 +72,7 @@ export default class PostPage extends Component {
             autor: this.state.autor,
             quote: this.state.quote,
             article: this.state.contentState,
-            image: this.state.image
+            images: this.state.images
           })
         })
           .then(response => response.json())
@@ -117,7 +121,7 @@ export default class PostPage extends Component {
             const image = await axios.post('http://localhost:5000/postimage', formData)
             .then(response => {
                                 console.log('image pre-set, response: ', response.data);
-                                this.setState({images: this.state['images'].push(response.data.url)})
+                                this.setState({images: [...this.state['images'], response.data.url] })
                                 return(response.data.url)
                               })
             .catch(err => console.log(err))
@@ -131,6 +135,12 @@ export default class PostPage extends Component {
 
 
 
+      }
+
+      checkImages = () => {
+        //this.setState({autor: JSON.parse(localStorage.getItem('username'))})
+        //console.log(this.state['images']);
+        console.log(this.state.autor)
       }
 
       /*       onContentStateChange = (contentState) => {
@@ -160,12 +170,11 @@ export default class PostPage extends Component {
             <a href='/' className="menu-item"> <img src={logoutPng} alt='login' style={{"width": "25px", margin: "0 10px 0 0"}}></img> <span className="user-items item-top">logout</span> </a>
         </aside>
         <main className="edit-space">
+          <button onClick={this.checkImages}>retrieve images</button>
             <form onSubmit={this.handleSubmit} className='centerForm-login'>
             <h1 className='center' > EDIT POST </h1>            
                 <label className='edits' name=" title "> Title </label>             
                 <input placeholder="Title" type='text' value={this.state.title} onChange={this.handleTitle} className='input' name="title"/>
-                <label className='edits' name="autor">Autor </label>             
-                <input  placeholder="Autor" type='text' value={this.state.autor} onChange={this.handleAutor} className='input' name="autor"/>
                 {/* <label className='edits' name="quote">Quote </label>             
                 <input  placeholder="| Quote" type='text' value={this.state.quote} onChange={this.quoteHandler} className='input' name="quote"/> */}
                 
@@ -226,8 +235,6 @@ export default class PostPage extends Component {
                 value={JSON.stringify(contentState, null, 4)}
                 style={{width: '1000px', height: '400px'}}
                 /> */}
-                <label className='edits' name="image"> Image </label> 
-                <input type='file' className="file-upload" onChange={this.imageHandler}/>
                 <input type="submit" value="Submit" className='submit' onClick={this.handleSubmit}/>
               </form>
 
