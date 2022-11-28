@@ -22,6 +22,7 @@ export default function Post() {
     let { id } = useParams();
 
     useEffect( () => {
+        window.scrollTo(0, 0);
         axios.get(`http://localhost:5000/post/${id}`, {
             headers: {
                 "Content-Type": "application/json",
