@@ -75,19 +75,18 @@ export default function Main() {
     <li key={article.indexOf(elem)} className="top-article">
       <a href={`http://localhost:3000/post/${elem['_id']}`} className='postLink'> 
         <h2 className='post-title' >{elem['title']}</h2>
+      </a>
         <div className='ssrr-article'>
           <img src={images[Math.floor(Math.random() * 5)]} alt="time" className='image' width='800px'></img>
           <div className='ssrr'>
-            <a href='/'><img src={instagram} alt='fb' width='27px' className='ssrr-img'></img></a>
-            <a href='/'><img src={facebook} alt='fb' width='27px' className='ssrr-img'></img></a>
-            <a href='/'><img src={twitter} alt='fb' width='27px' className='ssrr-img'></img></a>
+              <img src={instagram} alt='fb' width='27px' className='ssrr-img'></img>
+              <img src={facebook} alt='fb' width='27px' className='ssrr-img'></img>
+              <img src={twitter} alt='fb' width='27px' className='ssrr-img'></img>
           </div>        
         </div>
         <p className='date'> Sun, {elem['date'].split('-')[2].slice(0, 2)}/{elem['date'].split('-')[1]}/{elem['date'].split('-')[0]}</p>
-        
         <div className='post-article'>{parse(draftToHtml(elem['article']))}</div>
         <h5 className='autor'>- {elem['autor']}</h5> 
-      </a>   
     </li>
   )
 

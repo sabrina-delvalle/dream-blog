@@ -19,12 +19,12 @@ const deleteCookie = (req, res) => {
     return res.status(202).clearCookie('Token').send('clear cookie, done.')
 }
 
-//this cookie dont
+//this cookie dont   ------------------------------------ DOOONT WORK!
 const basicCookie = async (req, res) => {
     res.status(202).cookie('Name', 'Sabri', {
         SameSite: 'strict',
         path: '/',
-        expires: new Date(new Date().getTime() + 200000 * 1000),
+        expires: new Date(new Date().getTime() + 6 * 60 * 60 * 1000),
         httpOnly: false
         //secure: true
     }).send('initialised')
@@ -38,13 +38,13 @@ const userAuth = async (req, res) => {
         if(user && bcrypt.compareSync(req.body.password, user.password)){
             var token = jwt.sign({ 
                                     username: req.body.username,
-                                }, process.env.SECRET_KEY, { expiresIn: process.env.EXP_TIME });
+                                }, process.env.SECRET_KEY, { expiresIn: '5h' });
             console.log('generated token: ', token)
             //set cookie
             const setCookie = {
                 sameSite: 'strict',
                 path: '/',
-                expires: new Date(new Date().getTime() + 100 * 1000),
+                expires: new Date(new Date().getTime() + 6 * 60 * 60 * 1000),    //day, hour, sec, miliseconds
                 httpOnly: true
                 //secure: true
             }

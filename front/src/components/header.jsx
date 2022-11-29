@@ -16,17 +16,7 @@ export default function Header() {
   
   useEffect( () => {
     async function retrieveToken(){
-      /*axios.get('/token', {withCredentials: true}).then((res) => {
-        console.log('axios', res.data)
-      }) */  
       try{
-/*         await fetch('http://localhost:5000/token', {
-          method: 'GET',
-          headers: {
-            "Content-Type": "application/json",
-            "Accept": "application/json",
-          }
-        }) */
         await axios.get('http://localhost:5000/token', {
           headers: {
           "Content-Type": "application/json",

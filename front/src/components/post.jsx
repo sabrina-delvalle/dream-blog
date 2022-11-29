@@ -19,10 +19,12 @@ export default function Post() {
 
     const [ post, setPost ] = useState([]);
     const [textArea, setTextArea] = useState("");
+    const [user, setUser] = useState(false);
+    const [name, setName] = useState('Login');
+    const [bearer, setBearer] = useState(undefined)
     let { id } = useParams();
 
     useEffect( () => {
-        window.scrollTo(0, 0);
         axios.get(`http://localhost:5000/post/${id}`, {
             headers: {
                 "Content-Type": "application/json",
@@ -33,7 +35,59 @@ export default function Post() {
             console.log('before setting POST: ', response);
             setPost(response.data[0])
         })
-    }, [id])
+
+        async function retrieveToken(){
+            try{
+              await axios.get('http://localhost:5000/token', {
+                headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json",
+                }
+              })
+              .then(response => {
+                console.log(response.data);
+                console.log('previous token, ', response);
+                if(response.data['token']) {
+                  setBearer(`Bearer ${response.data['token']}`)
+                }
+              })
+              //.then(response => response.json())
+      /*         .then(data=>{
+                console.log('previous token, ', data);
+                if(data['token']) {
+                  setBearer(`Bearer ${data['token']}`)
+                } */
+              //console.log('token from API: ', token)
+            }catch(err){
+              console.log(err)
+            }
+          }
+          retrieveToken()
+      
+          console.log('bearer, before get: ', bearer)
+          
+          if(bearer){
+            console.log('its passing away');
+            fetch('http://localhost:5000/user', {
+             method: 'GET',
+             headers: {
+               "Content-Type": "application/json",
+               "Accept": "application/json",
+               "Authorization": bearer
+             }
+           })
+           .then(response => response.json())
+           .then(data => {
+             //data.password = "";
+             console.log('data retrieve: ', data);
+             if(!data.name){
+               return setUser(false)
+             }
+             setName(data.name.toUpperCase()[0] + data.name.slice(1))
+             setUser(true)
+           })
+          } 
+    }, [id, user, name, bearer])
 
     function handleComment() {
         
@@ -78,7 +132,7 @@ export default function Post() {
 
     function handleDelete(e){
         console.log('element ', e)
-
+        console.log(post);
         fetch(`http://localhost:5000/comment/delete/${id}`, {
             method: 'PATCH',
             headers: {
@@ -90,7 +144,10 @@ export default function Post() {
         .then(response => response.json())
         .then(data => console.log(data))
 
+        setPost([post['comments'].pop()])
+
     }
+
 
     return (
     <div className="article-section top-article">
@@ -123,19 +180,31 @@ export default function Post() {
                  { post['comments'] !== undefined ? <div>{ post['comments'].map((elem) => 
                                                     <div key={post['comments'].indexOf(elem)} >
                                                         <div className='comment-wrapper'>
-                                                        <img src={dots} alt='info-extra' className="dots-info" onClick={()=>handleDelete(elem)} />
+                                                        {
+                                                            user ? 
+                                                            <img src={dots} alt='info-extra' className="dots-info" onClick={()=>handleDelete(elem)} /> 
+                                                            : <p></p>
+                                                        }
+                                                        
                                                             <img src={elem['user'].profileImage} width="50px" alt='user-pic' className="comment-pic"/>
                                                             <p className="comment-1"> {elem['comment']} </p>
                                                         </div>
                                                         <p className="comment-date">Mon, Sep 30th, 2023</p>
                                                     </div>)
                                                     }</div> : <p>Loading...</p> }
-                </div>
-                <textarea className="comments" placeholder="write comment" onChange={handleText} value={textArea}/>
-                <button className="post-button2" onClick={handleComment}>Post</button>
+                </div>                
         </div>
+                {
+                    user ? 
+                    <div className="comments-wrapper"><textarea className="comments" placeholder="write comment" onChange={handleText} value={textArea}/>
+                    <button className="post-button2" onClick={handleComment}>Post</button></div> 
+                    :
+                    <div  className="comments-wrapper-login">
+                        <span><a href="http://localhost:3000/login" className="log-link2">Login</a> / <a href="http://localhost:3000/register" className="log-link2">Sign In</a></span>
+                    </div> 
+                }
 
     </div>
     );
 
-}
+} 

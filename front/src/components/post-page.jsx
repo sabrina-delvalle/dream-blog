@@ -10,8 +10,6 @@ import { Editor } from 'react-draft-wysiwyg';
 //import { EditorState, convertFromRaw /* convertToRaw */ } from "draft-js";
 import '/node_modules/react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import { convertFromRaw } from 'draft-js';
-const name = JSON.parse(localStorage.getItem('username'))[0].toUpperCase() + JSON.parse(localStorage.getItem('username')).slice(1);
-const lastname = JSON.parse(localStorage.getItem('userlastname'))[0].toUpperCase() + JSON.parse(localStorage.getItem('userlastname')).slice(1)
 const content = {"entityMap":{},"blocks":[{"key":"637gr","text":"Initialized from content state.","type":"unstyled","depth":0,"inlineStyleRanges":[],"entityRanges":[],"data":{}}]};
 
 
@@ -24,6 +22,8 @@ export default class PostPage extends Component {
     constructor(props){
         super(props);
         const contentState = convertFromRaw(content);
+        const name = JSON.parse(localStorage.getItem('username'))[0].toUpperCase() + JSON.parse(localStorage.getItem('username')).slice(1);
+        const lastname = JSON.parse(localStorage.getItem('userlastname'))[0].toUpperCase() + JSON.parse(localStorage.getItem('userlastname')).slice(1);
         this.state ={title: '', autor: `${name} ${lastname}`, quote:'', text: '', images: [], /* editorState: EditorState.createEmpty(), */ contentState};  //content State JSON 
         
         this.handleTitle = this.handleTitle.bind(this);
