@@ -513,9 +513,10 @@ a{
   flex-direction: row ;
   align-items: center;
   background-color: #ffffff80;
-  border: 1px solid black;
-  border-radius: 2px;
-  margin: 1% 0;
+  border: 1px solid rgb(182, 179, 179);
+  border-radius: 30px;
+  margin: 2% 0;
+  padding: 3%;
   color: white
 }
 .post-line:hover{
@@ -523,10 +524,12 @@ a{
   flex-direction: row ;
   align-items: center;
   background-color: #d7d7d780;
-  border: 1px solid black;
-  border-radius: 2px;
-  margin: 1% 0;
-  color: white
+  border: 1px solid rgb(184, 180, 180);
+  border-radius: 30px;
+  padding: 3%;
+  margin: 2% 0;
+  color: white;
+  cursor: pointer;
 }
 
 
@@ -843,4 +846,18 @@ a{
 
 .log-link2:hover{
   color: #d7dada;
+}
+
+.logout-internal-pannel{
+  background: none;
+  border: none;
+  margin: 0;
+  padding: 0;
+}
+.logout-internal-pannel:hover{
+  background: none;
+  border: none;
+  margin: 0;
+  padding: 0;
+  cursor: pointer;
 }

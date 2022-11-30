@@ -56,7 +56,7 @@ const createUser =  async (req, res) => {
 const getUser = async (req, res) => {
     try{
     const user = res.user
-    console.log('stage  to render user: ', user['username'])
+    console.log('stage  to render user...: ', user['username'])
     //if(user){
             let userFound = await User.findOne({username: user['username']});
             console.log('user to render in log: ', userFound)

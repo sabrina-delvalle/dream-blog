@@ -1,18 +1,23 @@
-import React, { Component } from "react";
 import loginPng from '../images/login.png'
 import privacyPng from '../images/security.png'
 import logoutPng from '../images/logout.png'
 import blogPng from '../images/blog.png'
 import legalPng from '../images/legal.png'
 import newPng from '../images/new-file.png'
+import axios from 'axios';
+axios.defaults.withCredentials = true;
+axios.defaults.headers.post['Content-Type'] ='application/x-www-form-urlencoded';
 
-export default class Userprofile extends Component {
-    constructor(props){
-        super(props);
-        this.state={user: 'koudelka'}
-    }
+export default function Userprofile() {
 
-  render() {
+    async function clearCookie (){
+        console.log('here handling cookie inside')
+        axios.get('http://localhost:5000/clearcookie', {withCredentials: true})
+          .then((res) => {
+          console.log(res.data)
+          document.location.reload('/') 
+      })}
+
     return(
         <div className="main-profile">
             <aside className="userdata">
@@ -21,7 +26,9 @@ export default class Userprofile extends Component {
                 <a href='/profile' className="menu-item"> <img src={blogPng} alt='login' style={{"width": "25px", margin: "0 10px 0 0"}}></img> <span className="user-items item-top">Blog's Info</span> </a>
                 <a href='/profile' className="menu-item"> <img src={legalPng} alt='login' style={{"width": "25px", margin: "0 10px 0 0"}}></img> <span className="user-items item-top">Policies</span> </a>
 
-                <a href='/' className="menu-item"> <img src={logoutPng} alt='login' style={{"width": "25px", margin: "0 10px 0 0"}}></img> <span className="user-items item-top">logout</span> </a>
+                <button onClick={clearCookie} className='logout-internal-pannel'> 
+                    <a href='/' className="menu-item"> <img src={logoutPng} alt='login' style={{"width": "25px", margin: "0 10px 0 0"}}></img> <span className="user-items item-top">logout</span> </a>
+                </button> 
             </aside>
             <main className="user-actions">
                 <a href='/new-post' type='text' className="post-button">NEW POST <img src={newPng} alt='login' style={{"width": "25px", margin: "0 0 0 10px"}}></img></a>
@@ -50,5 +57,4 @@ export default class Userprofile extends Component {
             </main>
         </div>
     )
-  }
 }

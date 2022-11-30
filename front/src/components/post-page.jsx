@@ -170,7 +170,6 @@ export default class PostPage extends Component {
             <a href='/' className="menu-item"> <img src={logoutPng} alt='login' style={{"width": "25px", margin: "0 10px 0 0"}}></img> <span className="user-items item-top">logout</span> </a>
         </aside>
         <main className="edit-space">
-          <button onClick={this.checkImages}>retrieve images</button>
             <form onSubmit={this.handleSubmit} className='centerForm-login'>
             <h1 className='center' > EDIT POST </h1>            
                 <label className='edits' name=" title "> Title </label>             

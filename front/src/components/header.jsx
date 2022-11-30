@@ -96,7 +96,7 @@ export default function Header() {
 function Login(props){
   return (
     <div>
-      <a href="http://localhost:3000/login" className="log-link">login</a>/<a href="http://localhost:3000/register" className="log-link">Sign In</a>
+      <a href="http://localhost:3000/login" className="log-link">Login</a>/<a href="http://localhost:3000/register" className="log-link">Sign In</a>
     </div>
   )
 }

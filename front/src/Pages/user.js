@@ -7,12 +7,12 @@ import '../App.css';
 
 function User(){
     function handleAuth(){
-        fetch('/user/:id', {
+        fetch('/user', {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
                 "Accept": "application/json",
-                "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImlzaXM3NyIsInBhc3N3b3JkIjoiMTIzNDU2IiwiaWF0IjoxNjY0MDc0MTk3LCJleHAiOjE2NjQwNzQzNzd9.VU004vVE6dkWYAizxqr7K-op_TFoi_krE8Q5jo5SZZ0"
+                "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImVtbWEiLCJpYXQiOjE2Njk3NjE3NzEsImV4cCI6MTY2OTc3OTc3MX0.5bkCU-LPcqKiWFDVDe910LsNyG23syhWhUdTTfFTALo"
             }
         })
             .then(response => response.json())

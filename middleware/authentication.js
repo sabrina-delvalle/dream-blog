@@ -16,6 +16,7 @@ const tokenCheck = (req, res) => {
 }
 
 const deleteCookie = (req, res) => {
+    console.log('deleting cookie');
     return res.status(202).clearCookie('Token').send('clear cookie, done.')
 }
 
