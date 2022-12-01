@@ -5,6 +5,7 @@ import blogPng from '../images/blog.png'
 import legalPng from '../images/legal.png'
 import newPng from '../images/new-file.png'
 import axios from 'axios';
+//import { withRouter } from "react-router";
 axios.defaults.withCredentials = true;
 axios.defaults.headers.post['Content-Type'] ='application/x-www-form-urlencoded';
 
@@ -15,7 +16,8 @@ export default function Userprofile() {
         axios.get('http://localhost:5000/clearcookie', {withCredentials: true})
           .then((res) => {
           console.log(res.data)
-          document.location.reload('/') 
+          //document.location.reload('/')
+          document.location.replace('/')
       })}
 
     return(
@@ -27,7 +29,7 @@ export default function Userprofile() {
                 <a href='/profile' className="menu-item"> <img src={legalPng} alt='login' style={{"width": "25px", margin: "0 10px 0 0"}}></img> <span className="user-items item-top">Policies</span> </a>
 
                 <button onClick={clearCookie} className='logout-internal-pannel'> 
-                    <a href='/' className="menu-item"> <img src={logoutPng} alt='login' style={{"width": "25px", margin: "0 10px 0 0"}}></img> <span className="user-items item-top">logout</span> </a>
+                    <span className="menu-item"> <img src={logoutPng} alt='login' style={{"width": "25px", margin: "0 10px 0 0"}}></img> <span className="user-items item-top">logout</span> </span>
                 </button> 
             </aside>
             <main className="user-actions">

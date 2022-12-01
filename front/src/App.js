@@ -12,6 +12,7 @@ import PostPage from './Pages/new-post';
 import PostID from './Pages/post';
 
 function App() {
+
   return (
     <Router>
       <Routes>
