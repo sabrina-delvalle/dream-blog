@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component} from "react";
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 import '../App.css'
@@ -90,7 +90,8 @@ class Login extends Component {
         localStorage.setItem('username', JSON.stringify(res.data.name))
         localStorage.setItem('userlastname', JSON.stringify(res.data.lastname))
         localStorage.setItem('image', JSON.stringify(res.data.image))
-        this.props.navigate('/')
+        //this.props.navigate('/')
+        document.location.replace('/')
       }
   })
 

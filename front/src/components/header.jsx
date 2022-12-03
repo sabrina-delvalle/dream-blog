@@ -1,18 +1,19 @@
+import { useState, useEffect, useContext } from "react";
+import { UserContext } from '../UserContext';
 import React from "react";
 import NavBar from "./navbar"
 import axios from 'axios';
-import { useState, useEffect } from "react";
 //import { navigate } from "react-router-dom"
 axios.defaults.withCredentials = true;
 axios.defaults.headers.post['Content-Type'] ='application/x-www-form-urlencoded';
 
 
 export default function Header() {
-
   const [user, setUser] = useState(false);
   const [name, setName] = useState('Login');
   const [userImg, setUserImg] = useState('');
   const [bearer, setBearer] = useState(undefined)
+  const { logUser, setLogUser } = useContext(UserContext);
   
   useEffect( () => {
     async function retrieveToken(){
@@ -65,22 +66,25 @@ export default function Header() {
        setName(data.name.toUpperCase()[0] + data.name.slice(1))
        setUserImg(data.image)
        //console.log(name)
-       setUser(true)
+       setUser(true);
+       setLogUser(true);
      })
     } 
-  }, [user, name, bearer])
+  }, [user, name, bearer, setLogUser, logUser])
 
   const handleCookieDelete = () => {
     console.log('here handling cookie inside')
     axios.get('http://localhost:5000/clearcookie', {withCredentials: true})
-      .then((res) => {
+    .then((res) => {
       console.log(res.data)
-      document.location.reload() 
+      setLogUser(false)
+      //document.location.reload() 
   })}
 
 
   const toRender = user ? <Logged userImg={userImg} name={name} setBearer={setBearer} clearCookie={handleCookieDelete}/> : <Login /> 
   return (
+    
   <div>
     <div className="Header">
         <div className="log">

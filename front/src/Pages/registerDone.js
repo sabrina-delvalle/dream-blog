@@ -8,9 +8,9 @@ function Register() {
   return(
     <div>
       <Header/>
-      <Link to='/'> 
-        <h2 className={'done'} > Registration has been successful. </h2>
-      </Link>
+        <Link to='/'> 
+          <h2 className={'done'} > Registration has been successful. </h2>
+        </Link>
       <Footer/>      
     </div>
   )

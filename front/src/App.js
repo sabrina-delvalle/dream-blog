@@ -1,4 +1,5 @@
 import './App.css';
+import { useState, useMemo } from 'react';
 import { BrowserRouter as Router, Routes, Route} from 'react-router-dom'
 import Index from './Pages/index';
 import Login from './Pages/login';
@@ -10,23 +11,35 @@ import User from './Pages/user'
 import Profile from './Pages/userprofile';
 import PostPage from './Pages/new-post';
 import PostID from './Pages/post';
+import { UserContext } from './UserContext';
+import ProtectedRoutes from './ProtectedRoutes';
 
 function App() {
 
+  const [logUser, setLogUser] = useState(false);
+
+  const providerValue = useMemo(() => ({logUser, setLogUser}), [logUser, setLogUser])
+
   return (
     <Router>
-      <Routes>
-        <Route path='/' element={<Index/>} />
-        <Route path='/new-post' element={<PostPage/>} />
-        <Route path='/login' element={<Login/>} />
-        <Route path='/profile' element={<Profile/>} />
-        <Route path='/auth' element={<Auth/>} />
-        <Route path='/register' element={<Register/>} />
-        <Route path='/user/:id' element={<User />} />
-        <Route path='/post/:id' element={<PostID />} />
-        <Route path='/done' element={<Done />} />
-        <Route path='*' element={<NotFound/>} />
-      </Routes>
+        <UserContext.Provider value={providerValue}>
+          <Routes>
+            <Route path='/' element={<Index/>} />
+            <Route path='/login' element={<Login/>} />
+            <Route path='/register' element={<Register/>} />
+            <Route path='/auth' element={<Auth/>} />
+            <Route path='/user/:id' element={<User />} />
+            <Route path='/post/:id' element={<PostID />} />
+            <Route path='/done' element={<Done />} />
+
+            <Route element={<ProtectedRoutes/>}>
+              <Route path='/new-post' element={<PostPage/>} />  
+              <Route path='/profile' element={<Profile/>} /> 
+            </Route>
+          
+            <Route path='*' element={<NotFound/>} />
+          </Routes>
+        </UserContext.Provider>
     </Router>
   );
 }
