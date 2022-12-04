@@ -4,6 +4,7 @@ import logoutPng from '../images/logout.png'
 import blogPng from '../images/blog.png'
 import legalPng from '../images/legal.png'
 import newPng from '../images/new-file.png'
+import Cookies from 'js-cookie'
 import axios from 'axios';
 axios.defaults.withCredentials = true;
 axios.defaults.headers.post['Content-Type'] ='application/x-www-form-urlencoded';
@@ -16,6 +17,7 @@ export default function Userprofile() {
           .then((res) => {
           console.log(res.data)
           //document.location.reload('/')
+          Cookies.remove('userSession')
           document.location.replace('/')
       })}
 

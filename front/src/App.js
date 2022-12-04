@@ -16,9 +16,9 @@ import ProtectedRoutes from './ProtectedRoutes';
 
 function App() {
 
-  const [logUser, setLogUser] = useState(false);
+    const [logUser, setLogUser] = useState(false);
+    const providerValue = useMemo(() => ({logUser, setLogUser}), [logUser, setLogUser])
 
-  const providerValue = useMemo(() => ({logUser, setLogUser}), [logUser, setLogUser])
 
   return (
     <Router>

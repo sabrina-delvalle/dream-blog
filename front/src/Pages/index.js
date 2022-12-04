@@ -9,7 +9,6 @@ import { UserContext } from '../UserContext';
 function Index() {
 
   const { logUser, setLogUser } = useContext(UserContext);
-  const user = {name: "Isis", lastname: "del Valle", _id: "9955378201"}
 
   return (
   <div>
@@ -17,7 +16,7 @@ function Index() {
     <Aside/>
     {JSON.stringify(logUser, null, 2)}
     {!logUser ? 
-      <button onClick={() => setLogUser(user)}>Login</button> 
+      <button onClick={() => setLogUser(false)}>Login</button> 
       : 
       <button onClick={() => setLogUser(null)}>Logout</button>
     }

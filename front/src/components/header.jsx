@@ -1,8 +1,9 @@
-import { useState, useEffect, useContext } from "react";
-import { UserContext } from '../UserContext';
+import { useState, useEffect } from "react";
+//import { UserContext } from '../UserContext';
 import React from "react";
 import NavBar from "./navbar"
 import axios from 'axios';
+import Cookies from 'js-cookie'
 //import { navigate } from "react-router-dom"
 axios.defaults.withCredentials = true;
 axios.defaults.headers.post['Content-Type'] ='application/x-www-form-urlencoded';
@@ -13,12 +14,12 @@ export default function Header() {
   const [name, setName] = useState('Login');
   const [userImg, setUserImg] = useState('');
   const [bearer, setBearer] = useState(undefined)
-  const { logUser, setLogUser } = useContext(UserContext);
+  //const { logUser, setLogUser } = useContext(UserContext);
   
   useEffect( () => {
     async function retrieveToken(){
       try{
-        await axios.get('http://localhost:5000/token', {
+          await axios.get('http://localhost:5000/token', {
           headers: {
           "Content-Type": "application/json",
           "Accept": "application/json",
@@ -31,13 +32,6 @@ export default function Header() {
             setBearer(`Bearer ${response.data['token']}`)
           }
         })
-        //.then(response => response.json())
-/*         .then(data=>{
-          console.log('previous token, ', data);
-          if(data['token']) {
-            setBearer(`Bearer ${data['token']}`)
-          } */
-        //console.log('token from API: ', token)
       }catch(err){
         console.log(err)
       }
@@ -67,18 +61,23 @@ export default function Header() {
        setUserImg(data.image)
        //console.log(name)
        setUser(true);
-       setLogUser(true);
+       //setLogUser(true);
      })
-    } 
-  }, [user, name, bearer, setLogUser, logUser])
+    }
+    //if(user) setLogUser(true)
+    //console.log('before the fucking user to looooog, user: ', user, " and the logUser, ", logUser);
+
+  }, [user, name, bearer])
 
   const handleCookieDelete = () => {
     console.log('here handling cookie inside')
     axios.get('http://localhost:5000/clearcookie', {withCredentials: true})
     .then((res) => {
       console.log(res.data)
-      setLogUser(false)
+      //setLogUser(false)
       //document.location.reload() 
+      Cookies.remove('userSession')
+      document.location.replace('/')
   })}
 
 

@@ -1,25 +1,20 @@
-import { Outlet } from "react-router-dom";
-import { useContext } from "react";
-import { UserContext } from './UserContext';
+import { Outlet, Navigate } from "react-router-dom";
+import Cookies from 'js-cookie'
+//import { useState } from "react";
+//import { UserContext } from './UserContext';
+//import Index from "./Pages";
 //import { useState } from "react";
 //import axios from "axios";
 //import Index from "./Pages";
 
 
-const useAuth = () => {
-  const { logUser, setLogUser } = useContext(UserContext);
-  console.log("what the hell is LOGUSER! ", logUser);
-  return logUser
-}
-
-const indexReturn = () => {
-  return document.location.replace('/')
+function useAuth () {
+  return Cookies.get('userSession')
 }
 
 const ProtectedRoutes = () => {
-  const isAuth = useAuth();
   return (
-    isAuth ? <Outlet/> : indexReturn()
+    useAuth() === 'true' ? <Outlet/> : <Navigate to="/" replace />
   )
 }
 

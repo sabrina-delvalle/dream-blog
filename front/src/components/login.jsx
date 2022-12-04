@@ -1,6 +1,8 @@
-import React, { Component} from "react";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+//import { UserContext } from '../UserContext';
 import axios from 'axios';
+import Cookies from 'js-cookie'
 import '../App.css'
 import facebook from '../images/facebook.png'
 import twitter from '../images/twitter.png'
@@ -10,68 +12,35 @@ axios.defaults.withCredentials = true;
 axios.defaults.headers.post['Content-Type'] = 'application/json';
 
 
-class Login extends Component {
-    constructor(props){
-        super(props);
-        this.state ={ username: '', password: '', logged: true }; 
-        
-        this.handleUsername = this.handleUsername.bind(this);
-        this.handlePassword = this.handlePassword.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
-    
-      } 
+export default function Login() {
 
-    handleUsername(event) {
-        this.setState({username: event.target.value})
+    const [ username, setUsername ] = useState('');
+    const [ password, setPassword ] = useState('');
+    const [ logged, setLogged ] = useState(true);
+    //const { logUser, setLogUser } = useContext(UserContext);
+
+
+    function handleUsername(event) {
+        setUsername(event.target.value)
     }
 
-    handlePassword(event) {
-        this.setState({password: event.target.value})
+    function handlePassword(event) {
+        setPassword(event.target.value)
     }
 
-  async handleSubmit(event){
+  async function handleSubmit(event){
     event.preventDefault();
-    //console.log('username: ' + this.state.username + '\npassword: ' + this.state.password)
-    //console.log(this.state)
-    //console.log(JSON.stringify(this.state))
-/*     axios.get('/login', {withCredentials: true}).then((res) => {
-      console.log('axios', res.data)
-    }) */
 
-/*     fetch('/login', {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Accept": "text"
-      },
-      body: JSON.stringify(this.state)
-    })
-      .then(response => response.text())
-      .then(data => {
-        console.log('data response', data)
-          if (data === 'invalid user or password') {
-            console.log('wrong user or password, please try again')
-            this.setState({logged: false})
-          }else{
-            document.cookie=`token=; max-age=0`
-            document.cookie= `token=${data}`; 
-            console.log(document.cookie.split('=')[1])
-            this.props.navigate('/') 
-          }
-      }) */
-
-  const userInfo = {
-    username: this.state.username,
-    password: this.state.password
-  }
+    const userInfo = {
+      username: username,
+      password: password
+    }
     console.log('user ', userInfo)
     console.log('user ', JSON.stringify(userInfo))
 
     const formData = new FormData();
-    formData.append('username', this.state.username)
-    formData.append('password', this.state.password)
-
-
+    formData.append('username', username)
+    formData.append('password', password)
       
   axios.post('http://localhost:5000/login', formData, {
     headers: {
@@ -83,52 +52,34 @@ class Login extends Component {
       console.log('axios ', res.data)
       if (res.data === 'invalid user or password') {
         console.log('wrong user or password, please try again')
-        this.setState({logged: false})
-        this.setState({password: ''})
+        setLogged(false)
+        setPassword('')
       } else {
+        //setLogUser(true);
+        //console.log(logUser);
         console.log('local storageee: ', res.data)
         localStorage.setItem('username', JSON.stringify(res.data.name))
         localStorage.setItem('userlastname', JSON.stringify(res.data.lastname))
         localStorage.setItem('image', JSON.stringify(res.data.image))
+        Cookies.set('userSession', true, { expires: 365, secure: true, sameSite: 'strict' })
+        setLogged(true)
         //this.props.navigate('/')
+        //setLogUser(true);
         document.location.replace('/')
       }
+      //setLogUser(true);
   })
-
-      /* fetch('/login', {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Accept": "text"
-        },
-        body: JSON.stringify(this.state)
-      })
-        .then(response => response.text())
-        .then(data => {
-          console.log('data response', data)
-            if (data === 'invalid user or password') {
-              console.log('wrong user or password, please try again')
-              this.setState({logged: false})
-            }else{
-              document.cookie=`token=; max-age=0`  // delete
-              document.cookie= `token=${data}`;   //too
-              console.log(document.cookie.split('=')[1])  //too
-              this.props.navigate('/') 
-            }
-        }) */
         
 }
 
-  render() {
-    let logged = this.state.logged;
     return (
     <div className='centerForm-login-section'>
-          <form onSubmit={this.handleSubmit} className='centerForm-login'>
+          <form onSubmit={handleSubmit} className='centerForm-login'>
           <h1 className='center' > Login </h1>            
             <label className='blocks-login' name="username"> Username </label>             
-              <input type='text' value={this.state.username} onChange={this.handleUsername} className='input-1-log' name="username"/>
+              <input type='text' value={username} onChange={handleUsername} className='input-1-log' name="username"/>
             <label className='blocks-login' name="password"> Password </label>             
-              <input type='password' value={this.state.password} onChange={this.handlePassword} className='input-1-log' name="password" placeholder='*******'/>
+              <input type='password' value={password} onChange={handlePassword} className='input-1-log' name="password" placeholder='*******'/>
             {
               logged ? <p></p> : <p className="wrongPassword" >wrong user or password, please try again</p>
             }
@@ -144,7 +95,6 @@ class Login extends Component {
           </div>
     </div>
     )
-  }
 }
 
 export function LoginSession (props){
