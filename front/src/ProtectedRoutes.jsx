@@ -1,43 +1,33 @@
 import { Outlet, Navigate } from "react-router-dom";
 import Cookies from 'js-cookie'
+import axios from "axios";
 //import { useState } from "react";
-//import { UserContext } from './UserContext';
-//import Index from "./Pages";
-//import { useState } from "react";
-//import axios from "axios";
-//import Index from "./Pages";
+//import { useEffect } from "react";
+//import { useEffect } from "react";
 
 
-function useAuth () {
+export default function ProtectedRoutes() {
 
- /*  let token = null; 
+ // const [token, setToken] = useState(null);
 
-  console.log('before searching the token: ');
-  fetch('http://localhost:5000/tokenvalidation', {
-    method: 'GET',
-    headers: {
-      "Content-Type": "application/json",
-      "Accept": "application/json",
-    }
-  })
-  .then(response => response.json())
-  .then(data => {
-    console.log('data retrieve in token for protected!: ', data);
-    if(!data.name){
-      return token = false
-    }
-    return token = true;
-  })
+  let token = new Promise((resolve, reject) => {
+        axios.get('http://localhost:5000/tokenvalidation', {
+          headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json",
+          }})
+          .then(response =>{
+            resolve(response['data']['token'])
+            console.log('token!!! from Protected Routes: ', response['data']['token']);
+          })
+      });
 
-  console.log('the token!! ', token); */
-
-  return Cookies.get('userSession')
-}
-
-const ProtectedRoutes = () => {
+  //find a way to FIX retriving TOKEN FROM API, for the moment just do the deploy
+    
+    console.log('the token value:::: ', token );
   return (
-    useAuth() === 'true' ? <Outlet/> : <Navigate to="/" replace />
+    token && Cookies.get('userSession') ? <Outlet/> : <Navigate to="/" replace />
   )
-}
 
-export default ProtectedRoutes; 
+
+}

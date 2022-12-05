@@ -13,10 +13,11 @@ import PostPage from './Pages/new-post';
 import PostID from './Pages/post';
 import { UserContext } from './UserContext';
 import ProtectedRoutes from './ProtectedRoutes';
+import userAuth from './hooks/userAuth';
 
 function App() {
 
-    const [logUser, setLogUser] = useState(false);
+    const [logUser, setLogUser] = useState(userAuth);
     const providerValue = useMemo(() => ({logUser, setLogUser}), [logUser, setLogUser])
 
 

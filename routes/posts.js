@@ -50,7 +50,8 @@ router.patch('/updateuser/:id', usersRouter.updateUser)
 router.delete('/deleteuser/:id', usersRouter.deleteUser)
 router.get('/clearcookie', middleware.deleteCookie)
 router.get('/profile')
-/router.get('/token', middleware.tokenCheck)
+router.get('/token', middleware.tokenCheck)
+router.get('/tokenvalidation', middleware.tokenValidation)
 
 router.get('/header', usersRouter.getHeaders)
 

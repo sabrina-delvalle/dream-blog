@@ -4,14 +4,30 @@ const bcrypt = require('bcrypt');
 const User = require('../Models/User');
 
 const tokenCheck = (req, res) => {
-    //console.log("cookie headers: ", req.headers.cookie)
-    if(req.headers.cookie){
-        let token = req.headers.cookie
-        token = token.split('=')[1]
+    if(!req.headers.cookie) return (res.json({message: 'ok'}))
+    const cookies = req.headers.cookie.split('; ')
+    const cookieToken = cookies.filter( elem => elem.split('=')[0] === 'Token' )
+    console.log("cookie headers!!!: ", cookieToken[0])
+    //filter(e => e==='Token')
+    if(cookieToken){
+        let token = cookieToken[0].split('=')[1]
         console.log('token from token ', token)
         return res.status(200).json({token: token})
     }
-    //res.send('done readed cooki').json({message: 'ok'})
+    res.send('done readed cooki').json({message: 'ok'})
+}
+
+const tokenValidation = (req, res) => {
+    console.log('Req Headers Cookie First Place!!; ', req.headers.cookie);
+    if(!req.headers.cookie) return (res.json({message: 'ok'}))
+    console.log('just after not working');
+    console.log("cookie headers!!! FIRST PLACE: ", req.headers.cookie)
+    if(req.headers.cookie){
+        let token = req.headers.cookie.split(';')[0]
+        token = token.split('=')[1]
+        console.log('token from token, FIRST PLACE ', token)
+        if(token) return res.json({token: true})
+    }
     return res.json({message: 'ok'})
 }
 
@@ -78,4 +94,4 @@ const validation = (req, res, next) => {
     if(req.user) next()
 }
 
-module.exports = { userAuth, authCheck, validation, basicCookie, tokenCheck, deleteCookie }
+module.exports = { userAuth, authCheck, validation, basicCookie, tokenCheck, tokenValidation, deleteCookie }
