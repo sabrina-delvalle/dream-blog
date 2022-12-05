@@ -6,9 +6,11 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 //const cloudinary = require('cloudinary').v2
 const fileUpload = require('express-fileupload');
+const mongoose = require('mongoose');
 var favicon = require('serve-favicon')
 var path = require('path')
 const { PORT } = process.env;
+
 
 app.use(cors({withCredentials: true}));
 app.use(function (req, res, next) {
@@ -38,4 +40,8 @@ app.use(favicon(path.join(__dirname, 'ico', 'favicon.ico')))
 
 app.use('/', require('./routes/posts'))
 
-app.listen(PORT, () => console.log(`Listening port ${PORT}` ))
+mongoose.connect(process.env.MONGO_DB)
+    .then(() => {
+        app.listen(PORT, () => console.log(`Listening port ${PORT}` ))
+    })
+    .catch(err => console.log(err))

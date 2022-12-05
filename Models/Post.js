@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
-mongoose.connect(process.env.MONGO_DB)
-    .then(() => console.log('connected to MongoDB.'));
+/* mongoose.connect(process.env.MONGO_DB)
+    .then(() => console.log('connected to MongoDB.')); */            // mongodb://localhost:27017/blog-post
 
 const postSchema = mongoose.Schema({
     title: String,
@@ -22,6 +22,6 @@ const postSchema = mongoose.Schema({
         of: Object,
         default: []     
     }     //remember to update comments list
-})
+}, {timestamps: true})
 
 module.exports = mongoose.model('Post', postSchema);
